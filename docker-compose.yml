@@ -1,0 +1,81 @@
+services:
+  helper:
+    image: janus_interop_aggregator:latest
+    volumes:
+     - ./config_helper:/etc/janus
+    networks:
+      prio-network:
+        ipv4_address: 172.0.0.2
+    healthcheck:
+        test: wget --no-verbose --tries=1 --spider http://172.0.0.2:8000/healthz || exit 1     
+        interval: 10s
+        timeout: 15s
+        start_period: 10s
+        retries: 5
+  leader:
+    image: janus_interop_aggregator:latest
+    volumes:
+     - ./config_leader:/etc/janus
+    networks:
+      prio-network:
+        ipv4_address: 172.0.0.3
+    healthcheck:
+        test: wget --no-verbose --tries=1 --spider http://172.0.0.3:8000/healthz || exit 1     
+        interval: 10s
+        timeout: 15s
+        start_period: 10s
+        retries: 5
+    ports:
+      - 5432:5432
+  client:
+    image: janus_interop_client:latest
+    ports:
+      - 8080:8080
+    networks:
+      prio-network:
+        ipv4_address: 172.0.0.10
+  collector:
+    image: janus_interop_collector:latest
+    networks:
+      prio-network:
+        ipv4_address: 172.0.0.5
+  # cli_helper:
+  #   depends_on:
+  #     helper:
+  #       condition: service_healthy
+  #   image: janus_cli:latest
+  #   command: ['--datastore-keys', 'OSjfC8QVPATwO3uVJcAnTA', 
+  #             '--config-file', './configs/janus_cli_helper.yaml', 'provision-tasks', 
+  #             './configs/tasks_helper.yaml']
+  #   volumes:
+  #    - ./configs:/configs
+  #   networks:
+  #     prio-network:
+  #       ipv4_address: 172.0.0.6
+  # cli_leader:
+  #   depends_on:
+  #     leader:
+  #       condition: service_healthy
+  #   image: janus_cli:latest
+  #   command: ['--datastore-keys', 'OSjfC8QVPATwO3uVJcAnTA', 
+  #             '--config-file', './configs/janus_cli_leader.yaml', 'provision-tasks', 
+  #             './configs/tasks_leader.yaml']
+  #   volumes:
+  #    - ./configs:/configs
+  #   networks:
+  #     prio-network:
+  #       ipv4_address: 172.0.0.7
+  adminer:
+    image: adminer
+    restart: always
+    networks:
+      prio-network:
+        ipv4_address: 172.0.0.8
+    volumes:
+     - ./login-password-less.php:/var/www/html/plugins-enabled/login-password-less.php
+networks:
+  prio-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.0.0.1/24"

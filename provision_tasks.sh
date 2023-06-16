@@ -1,0 +1,2 @@
+./bin/janus_cli --datastore-keys $1 --config-file ./configs/janus_cli_helper.yaml provision-tasks ./configs/tasks_helper.yaml &&
+./bin/janus_cli --datastore-keys $1 --config-file ./configs/janus_cli_leader.yaml provision-tasks ./configs/tasks_leader.yaml

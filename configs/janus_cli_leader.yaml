@@ -1,0 +1,9 @@
+# Common configuration parameters:
+
+database:
+  # Database URL. (required)
+  url: "postgres://postgres@172.0.0.3:5432/postgres"
+  check_schema_version: false
+
+# Socket address for /healthz HTTP requests. Defaults to 127.0.0.1:9001.
+health_check_listen_address: "0.0.0.0:8000"
