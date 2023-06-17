@@ -1,7 +1,0 @@
-PUT /tasks/G9YKXjoEjfoU7M_fi_o2H0wmzavRb2sBFHeykeRhDMk/collection_jobs/_seSc-Y1s0GEsnIi2oYJng HTTP/1.1
-content-type: application/dap-collect-req
-authorization: Bearer Y29sbGVjdG9yLWFiZjU0MDhlMmIxNjAxODMxNjI1YWYzOTU5MTA2NDU4
-accept: */*
-user-agent: janus_collector/0.5.3/collector
-host: 127.0.0.1:1234
-content-length: 6

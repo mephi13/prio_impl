@@ -12,7 +12,8 @@
   - "http://172.0.0.2/"
 
   # The DAP query type. See below for an example of a fixed-size task
-  query_type: TimeInterval
+  query_type: !FixedSize
+    max_batch_size: 1000
 
   # The task's VDAF. Each VDAF requires its own set of parameters.
   vdaf: !Prio3Sum
@@ -31,16 +32,16 @@
   max_batch_query_count: 1
 
   # The task's expiration time, as a number of seconds after the Unix epoch.
-  task_expiration: 1704088800
+  task_expiration: null
 
   # Time in seconds after which reports expire and may be garbage collected.
   # This is a Janus-specific parameter. Garbage collection for a task may
   # be disabled by setting this to `null`.
-  report_expiry_age: 7776000
+  report_expiry_age: null
 
   # Minimum number of reports that a batch must contain before the batch may be
   # collected.
-  min_batch_size: 10
+  min_batch_size: 100
 
   # The DAP task's time precision. This determines how clients round report
   # timestamps, and sets the minimum duration of any batch interval for time
@@ -100,3 +101,134 @@
       aead_id: Aes128Gcm
       public_key: LRQ-EkkenBkHml5sEXUyHauz7YO5wQploaeuBzzpexQ
     private_key: 2PqjC03IhjSpbeWwjjscRjmL7T0JpEfHjwTec_zDBHM
+
+# histogram
+- task_id: "2xS95txmQIduHhT3fqCtiMCfTdDaWcm_zuFsxIORMqY"
+  aggregator_endpoints:
+  - "http://172.0.0.3/"
+  - "http://172.0.0.2/"
+  query_type: !FixedSize
+    max_batch_size: 1000
+
+  vdaf: !Prio3Histogram
+    buckets: [25, 40, 50, 60, 75]
+
+  role: Leader
+  vdaf_verify_keys:
+  - "1CmuYNtBLYIoXN8bU0T_XA"
+  max_batch_query_count: 1
+  task_expiration: null
+  report_expiry_age: null
+  min_batch_size: 100
+  time_precision: 1800
+  tolerable_clock_skew: 60000
+  collector_hpke_config:
+    id: 1
+    kem_id: X25519HkdfSha256
+    kdf_id: HkdfSha256
+    aead_id: Aes128Gcm
+    public_key: A66xCrjccsiPTIxp8N3PPgx-EnayEBwj4hTyAQyQTDY
+  aggregator_auth_tokens:
+  - type: "DapAuth"
+    token: "YWdncmVnYXRvci0yMzUyNDJmOTk0MDZjNGZkMjhiODIwYzMyZWFiMGY2OA"
+  - type: "Bearer"
+    token: "YWdncmVnYXRvci04NDc1NjkwZjJmYzQzMDBmYjE0NmJiMjk1NDIzNDk1NA=="
+
+  collector_auth_tokens:   
+  - type: "Bearer"
+    token: "Y29sbGVjdG9yLWFiZjU0MDhlMmIxNjAxODMxNjI1YWYzOTU5MTA2NDU4"
+  hpke_keys:
+  - config:
+      id: 2
+      kem_id: X25519HkdfSha256
+      kdf_id: HkdfSha256
+      aead_id: Aes128Gcm
+      public_key: triCqKhOhg0F351Kv43FaPzZ0PLHDvv5IvvNNvVYSAw
+    private_key: UJbSAcLH0WDhYO5BUQZWeyOAaxfaC7NyZ7H10A5NGEQ
+
+- task_id: "DQrfJjhLU3vAnAzKFH5r5G8rBxmiYV7dOVieJNCbvKw"
+  aggregator_endpoints:
+  - "http://172.0.0.3/"
+  - "http://172.0.0.2/"
+
+  query_type: !FixedSize
+    max_batch_size: 1000
+  vdaf: !Prio3SumVec
+    bits: 10
+    length: 100
+
+  role: Leader
+  vdaf_verify_keys:
+  - "1CmuYNtBLYIoXN8bU0T_XA"
+  max_batch_query_count: 1
+  task_expiration: null
+  report_expiry_age: null
+  min_batch_size: 100
+  time_precision: 1800
+  tolerable_clock_skew: 60000
+  collector_hpke_config:
+    id: 1
+    kem_id: X25519HkdfSha256
+    kdf_id: HkdfSha256
+    aead_id: Aes128Gcm
+    public_key: A66xCrjccsiPTIxp8N3PPgx-EnayEBwj4hTyAQyQTDY
+  aggregator_auth_tokens:
+  - type: "DapAuth"
+    token: "YWdncmVnYXRvci0yMzUyNDJmOTk0MDZjNGZkMjhiODIwYzMyZWFiMGY2OA"
+  - type: "Bearer"
+    token: "YWdncmVnYXRvci04NDc1NjkwZjJmYzQzMDBmYjE0NmJiMjk1NDIzNDk1NA=="
+
+  collector_auth_tokens:   
+  - type: "Bearer"
+    token: "Y29sbGVjdG9yLWFiZjU0MDhlMmIxNjAxODMxNjI1YWYzOTU5MTA2NDU4"
+  hpke_keys:
+  - config:
+      id: 2
+      kem_id: X25519HkdfSha256
+      kdf_id: HkdfSha256
+      aead_id: Aes128Gcm
+      public_key: triCqKhOhg0F351Kv43FaPzZ0PLHDvv5IvvNNvVYSAw
+    private_key: UJbSAcLH0WDhYO5BUQZWeyOAaxfaC7NyZ7H10A5NGEQ
+
+# x^2 for variance
+- task_id: "qYLHmR8KbwvGUpMOxNL8ZGPwVLlyuYtTHoW_H2hThwQ"
+  aggregator_endpoints:
+  - "http://172.0.0.3/"
+  - "http://172.0.0.2/"
+  query_type: !FixedSize
+    max_batch_size: 1000
+  vdaf: !Prio3Sum
+    bits: 16
+
+  role: Leader
+  vdaf_verify_keys:
+  - "1CmuYNtBLYIoXN8bU0T_XA"
+  max_batch_query_count: 1
+  task_expiration: null
+  report_expiry_age: null
+  min_batch_size: 100
+  time_precision: 1800
+  tolerable_clock_skew: 60000
+  collector_hpke_config:
+    id: 1
+    kem_id: X25519HkdfSha256
+    kdf_id: HkdfSha256
+    aead_id: Aes128Gcm
+    public_key: A66xCrjccsiPTIxp8N3PPgx-EnayEBwj4hTyAQyQTDY
+  aggregator_auth_tokens:
+  - type: "DapAuth"
+    token: "YWdncmVnYXRvci0yMzUyNDJmOTk0MDZjNGZkMjhiODIwYzMyZWFiMGY2OA"
+  - type: "Bearer"
+    token: "YWdncmVnYXRvci04NDc1NjkwZjJmYzQzMDBmYjE0NmJiMjk1NDIzNDk1NA=="
+
+  collector_auth_tokens:   
+  - type: "Bearer"
+    token: "Y29sbGVjdG9yLWFiZjU0MDhlMmIxNjAxODMxNjI1YWYzOTU5MTA2NDU4"
+  hpke_keys:
+  - config:
+      id: 2
+      kem_id: X25519HkdfSha256
+      kdf_id: HkdfSha256
+      aead_id: Aes128Gcm
+      public_key: triCqKhOhg0F351Kv43FaPzZ0PLHDvv5IvvNNvVYSAw
+    private_key: UJbSAcLH0WDhYO5BUQZWeyOAaxfaC7NyZ7H10A5NGEQ

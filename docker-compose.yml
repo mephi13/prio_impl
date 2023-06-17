@@ -27,44 +27,6 @@ services:
         retries: 5
     ports:
       - 5432:5432
-  client:
-    image: janus_interop_client:latest
-    ports:
-      - 8080:8080
-    networks:
-      prio-network:
-        ipv4_address: 172.0.0.10
-  collector:
-    image: janus_interop_collector:latest
-    networks:
-      prio-network:
-        ipv4_address: 172.0.0.5
-  # cli_helper:
-  #   depends_on:
-  #     helper:
-  #       condition: service_healthy
-  #   image: janus_cli:latest
-  #   command: ['--datastore-keys', 'OSjfC8QVPATwO3uVJcAnTA', 
-  #             '--config-file', './configs/janus_cli_helper.yaml', 'provision-tasks', 
-  #             './configs/tasks_helper.yaml']
-  #   volumes:
-  #    - ./configs:/configs
-  #   networks:
-  #     prio-network:
-  #       ipv4_address: 172.0.0.6
-  # cli_leader:
-  #   depends_on:
-  #     leader:
-  #       condition: service_healthy
-  #   image: janus_cli:latest
-  #   command: ['--datastore-keys', 'OSjfC8QVPATwO3uVJcAnTA', 
-  #             '--config-file', './configs/janus_cli_leader.yaml', 'provision-tasks', 
-  #             './configs/tasks_leader.yaml']
-  #   volumes:
-  #    - ./configs:/configs
-  #   networks:
-  #     prio-network:
-  #       ipv4_address: 172.0.0.7
   adminer:
     image: adminer
     restart: always
